@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission with ajax</title>
+    <script>
+        $(document).ready(function () {
+            $('#myForm').submit(function (event) {
+                event.preventDefault(); // prevent the form from submitting normally
+
+                var formData = {
+                    'name': $('#name').val(),
+                    'email': $('#email').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'submit.php', // replace with your server-side script
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#success-message').html('Form submitted successfully!');
+                        $('#success-message').fadeIn().delay(3000).fadeOut(); // display success message for 3 seconds
+                        $('#myForm').hide();
+                    },
+                    error: function (xhr, status, error) {
+                        $('#success-message').html('Error submitting form: ' + error);
+                        $('#success-message').fadeIn().delay(3000).fadeOut(); // display error message for 3 seconds
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <form id="myForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+
+        <input type="submit" value="Submit">
+        <div id="success-message" style="display: none;"></div>
+    </form>
+    
+</body>
+</html>
